@@ -1,0 +1,27 @@
+Raspberry Pi Setup Instructions
+- - - - - - - - - - - - - - - -
+
+1. Download Etcher on your PC or Mac, and download the latest version of Raspbian (currently Stretch).
+
+2. Plug in an empty 32GB SD card, and use Etcher to flash Raspbian onto the card.
+
+3. Plug the SD card into your Pi, and power up the Pi. Make sure you have the Pi plugged into a monitor, keyboard, and mouse.
+
+4. Run the following command and change the keyboard and locale settings to match US style.
+   $ sudo raspi-config
+
+5. Follow all the instructions on the following website:
+
+   https://imaginghub.com/projects/144-installing-opencv-3-on-raspberry-pi-3#documentation
+
+
+   *** Note, instead of using the "cmake" command from the above link, at #5 on the website, run the following "cmake" command. ***
+
+   cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local -DENABLE_PRECOMPILED_HEADERS=OFF -DWITH_FFMPEG=OFF ..
+
+6. Run the following commands for picamera:
+
+   $ sudo apt-get update
+   $ sudo apt-get install python-picamera
+   $ sudo apt-get install python3-picamera
+   $ sudo apt-get install python-picamera-docs
