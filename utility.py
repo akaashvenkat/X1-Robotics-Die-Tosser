@@ -1,25 +1,20 @@
-#Implementation of findDistance and findFocalLength
+#Implementation of findDistance, findFocalLength, and findAngle
 
-#Returns the distance to an object when given the image width, the focal length, and the actual width of the object
+#Calculates the distance(float) to an object
+# - topLeft(int array) and topRight(int array) indicate the position of the cup in an image
+# - focalLen(float) gives a relationship between actual width and pixel width of an object
+# - actWidth(float) is the actual width in inches of the object
 def findDistance(topLeft, topRight, focalLen, actWidth):
-  distance = actWidth * focalLen / abs(topRight[0] - topLeft[0])
+  distance = actWidth * focalLen / (topRight[0] - topLeft[0])
   return distance
 
-#Returns the focal length of the camera when given the actual distance to the object, the actual width of the object, and the image width that appears on screen
-def findFocalLength(knownDistance, knownWidth, imageWidth):
-  focalLength = knownDistance * imageWidth / knownWidth
+#Calculates the focal length(float) of the camera
+# - knownDistance(float) is the actual distance in inches from the camera to the object
+# - actWidth(float) is the actual width in inches of the object
+# - imageWidth(int) is the number of pixels the object appears to be wide in an image
+def findFocalLength(knownDistance, actWidth, imageWidth):
+  focalLength = knownDistance * imageWidth / actWidth
   return focalLength
-
-#Testing out the two functions:
-#An object that is 10cm is placed at 100cm, seems to be 30 pixels long
-#focal = findFocalLength(100, 10, 30)
-
-#An object topLeft pixel is at 360, the topRight is at 380, giving a pixel length of 20
-#Same camera used so the focal length is the same, and the actual object detecting is 40cm long
-#distance = findDistance(360, 380, focal, 40)
-
-#Under the given conditions, the distance should be around 600cm
-#print(distance)
 
 def findAngle(topLeft, topRight, imageWidth, focalLen, actWidth, distToObj):
     #imageWidth is the pixels in the width of the image
@@ -29,4 +24,30 @@ def findAngle(topLeft, topRight, imageWidth, focalLen, actWidth, distToObj):
     centerToObjPix = (topRight[0] - topLeft[0]) - imageWidth/2
     distToObjPixel = (actWidth*focalLen) / distToObj
     angle = math.asin(centerToObjPix/distToObjPixel)
+    return angle
+
+#Calculates the yaw angle(float) that the cup is away from the center of the image
+#(Angle is zero at the center of the image)
+#(A negative angle indicates the cup is on the left of the center line)
+#(A positive angle indicates the cup is on the right of the center line)
+# - topLeft(int array) and topRight(int array) indicate the position of the cup in an image
+# - imageWidth(int) is the number of pixels of the image
+# - focalLen(float) gives a relationship between actual width and pixel width of an object
+# - actWidth(float) is the actual width in inches of the object, in this case, the cup
+# - angleOfView(float) tells the angle of view the camera is capable of taking images
+def findAngle(topLeft, topRight, imageWidth, focalLen, actWidth, angleOfView):
+    #Calculate the distance to the object
+    distToObj = findDistance(topLeft, topRight, focalLen, actWidth)
+
+    #Determine the center location of the cup within the image
+    cupPixel = topRight[0] - topLeft[0]
+    cupLocation = topLeft[0] + (cupPixel/2)
+
+    #Calculate the arc length of the circle within our field of view with radius distToObj
+    arcLength = 2 * math.pi * distToObj * (angleOfView / 360)
+
+    #Use ratios of the location vs the arc length to determine the yaw angle of the cup
+    angle = ((cupLocation / arcLength) - (0.5)) * angleOfView
+
+    #Returns the calculated result
     return angle
