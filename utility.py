@@ -16,15 +16,15 @@ def findFocalLength(knownDistance, actWidth, imageWidth):
   focalLength = knownDistance * imageWidth / actWidth
   return focalLength
 
-#def findAngle(topLeft, topRight, imageWidth, focalLen, actWidth, distToObj):
+def findAngle(topLeft, topRight, imageWidth, focalLen, actWidth, distToObj):
     #imageWidth is the pixels in the width of the image
     #distToObj is distance returned by findDistance
     #pixel = 0 at the very left of the field of view
 
-#    centerToObjPix = (topRight[0] - topLeft[0]) - imageWidth/2
-#    distToObjPixel = (actWidth*focalLen) / distToObj
-#    angle = math.asin(centerToObjPix/distToObjPixel)
-#    return angle
+    centerToObjPix = (topRight[0] - topLeft[0]) - imageWidth/2
+    distToObjPixel = (actWidth*focalLen) / distToObj
+    angle = math.asin(centerToObjPix/distToObjPixel)
+    return angle
 
 #Calculates the yaw angle(float) that the cup is away from the center of the image
 #(Angle is zero at the center of the image)
@@ -44,4 +44,4 @@ def findAngle(topLeft, topRight, imageWidth, angleOfView):
     #Returns the calculated result
     return angle
 
-print(findAngle(20, 70, 100, 60))
+print(findFocalLength(100, 10, 50))
