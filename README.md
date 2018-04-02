@@ -7,7 +7,7 @@
 - - - - - - - 
 ## detectCup.py
 
-Either takes an input image (when running on Ubuntu VM) or captures an image using a camera (when running on Raspberry Pi). Isolates the red regions of the image, and then searches for rectangles, ultimately detecting the red solo cup. Saves image of detected cup in the same directory as the program. Returns the pixel coordinates of the corners of the cup.
+Either takes an input image (when running on Ubuntu VM) or captures an image using a camera (when running on Raspberry Pi). Isolates the red regions of the image, and then searches for rectangles, ultimately detecting the red solo cup. Saves image of detected cup in the same directory as the program. Returns pixel coordinates of the corners of the cup.
 
 If running program on Ubuntu VM: **Set "CAMERA_ENABLED" to 0** at the top of file, and run:
 > python detectCup.py -i <path_to_input_image> 
