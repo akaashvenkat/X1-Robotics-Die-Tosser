@@ -80,6 +80,7 @@ class cupDetection:
         
         self.isolateCup()
         pixel_coords = [[self.approx[0][0][0], self.approx[0][0][1]], [self.approx[1][0][0], self.approx[1][0][1]], [self.approx[2][0][0], self.approx[2][0][1]], [self.approx[3][0][0], self.approx[3][0][1]]]
+        print(pixel_coords)
         return pixel_coords
         return 1
 
