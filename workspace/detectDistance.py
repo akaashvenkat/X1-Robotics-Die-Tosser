@@ -31,29 +31,25 @@ class distanceDetection:
 
 
     def findDistanceAndAngle(self, cup_coordinates):
-
-        image_width = 600;
-        actual_cup_width = 3.75;
-        focal_length = 453;
         
-        max_dist = 0
-        for i in range (0,4):
-            for j in range (i,4):
-                x_dist = abs(cup_coordinates[j][0] - cup_coordinates[i][0])
-                max_dist = max(max_dist, x_dist)
-
-        #top_right = cup_coordinates[3][0]
-        #top_left = cup_coordinates[0][0]
-
-        distance = actual_cup_width * focal_length / max_dist
-        center_to_obj_pix = image_width/2 - max_dist
+        image_width = 600
+        actual_cup_width = 3.75
+        focal_length = 453
+        angle_of_view = 60.0
         
+        x_diff = 0.0
+        max_x_diff = 0.0
+        max_x_sum = 0.0
         
-        #dist_to_obj_pix = (actual_cup_width * focal_length) / distance
-        #angle = math.atan(center_to_obj_pix / dist_to_obj_pix)
-        #print(center_to_obj_pix / dist_to_obj_pix)
+        for i in range(0,4):
+            for j in range(i, 4):
+                x_diff = abs(cup_coordinates[i][0] - cup_coordinates[j][0])
+                if x_diff > max_x_diff:
+                    max_x_diff = x_diff
+                    max_x_sum = abs(cup_coordinates[i][0] + cup_coordinates[j][0])
         
+        distance = actual_cup_width * focal_length / max_x_diff
+        angle = (max_x_sum / float(image_width) - 1.0) * angle_of_view / 2.0
         
-        angle = center_to_obj_pix / 600.0 * 62.0 - 31.0
-        distance_angle = [distance, angle]
-        return distance_angle
+        array = [distance, angle]
+        return array
