@@ -9,6 +9,7 @@ import sys
 import time
 
 
+OUTPUT_FILE = 'location.txt'
 CAMERA_ENABLED = 1
 if (CAMERA_ENABLED == 1):
     import picamera
@@ -121,8 +122,12 @@ def main():
     distance_and_angle = distanceDetect.findDistanceAndAngle(pixel_array)
     distance = distance_and_angle[0]
     angle = distance_and_angle[1]
+    output_values = str(distance) + "," + str(angle)
+
     print("Distance: " + str(distance))
     print("Angle: " + str(angle))
+    with open(OUTPUT_FILE, 'w') as file:
+        file.write(output_values)
     
     os.remove("detectDistance.pyc")
     
