@@ -16,11 +16,18 @@ CONST_IMAGEWIDTH = 600
 # - Index 0 contains the distance(float) in inches
 # - Index 1 contains the angle(float) in degrees, where 0 indicates the center of the image
 def findDistAndAngle(coordinates):
-    topLeft = (float)(coordinates[0][0])
-    topRight = (float)(coordinates[3][0])
+    xDiff = 0.0
+    maxXDiff = 0.0
+    maxXSum = 0.0
+    for i in range(0,4):
+        for j in range(i+1,4):
+            xDiff = abs(coordinates[i][0] - coordinates[j][0])
+            if xDiff > maxXDiff:
+                maxXDiff = xDiff
+                maxXSum = abs(coordinates[i][0] + coordinates[j][0])
 
-    distance = CONST_OBJECTWIDTH * CONST_FOCALLENGTH / (topRight - topLeft)
-    angle = ((topLeft + topRight) / CONST_IMAGEWIDTH - 1.0) * CONST_ANGLEOFVIEW / 2.0
+    distance = CONST_OBJECTWIDTH * CONST_FOCALLENGTH / (maxXDiff)
+    angle = (maxXSum / float(CONST_IMAGEWIDTH) - 1.0) * CONST_ANGLEOFVIEW / 2.0
 
     array = [distance, angle]
     return array
