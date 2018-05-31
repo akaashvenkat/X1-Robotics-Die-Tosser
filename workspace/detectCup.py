@@ -25,8 +25,8 @@ class cupDetection:
     
     def isolateRed(self):
 
-        low_red_bounds  = np.array([155,65,65], dtype=np.uint8)
-        high_red_bounds = np.array([205,255,255], dtype=np.uint8)
+        low_red_bounds  = np.array([155, 150, 10], dtype=np.uint8) #155,65,65
+        high_red_bounds = np.array([205,255,255], dtype=np.uint8) #205. 255, 255
         mask = cv2.inRange(self.image, low_red_bounds, high_red_bounds)
         
         self.isolated_red_output = self.img.copy()
@@ -37,8 +37,8 @@ class cupDetection:
     # Details found on: https://mehmethanoglu.com.tr/blog/6-opencv-ile-dikdortgen-algilama-python.html
     def isolateRectangle(self):
         
-        pixel_width  = 600.0
-        pixel_height = 420.0
+        pixel_width  = 3000.0
+        pixel_height = 2000.0
         pixel_margin = 10.0
 
         corners = np.array([[[pixel_margin, pixel_margin]],[[pixel_margin, pixel_height + pixel_margin]],[[pixel_width + pixel_margin, pixel_height + pixel_margin]],[[pixel_width + pixel_margin, pixel_margin]],])
@@ -55,7 +55,7 @@ class cupDetection:
         _, contours, h = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
         for contour in contours:
-            if cv2.contourArea(contour) > 5000 :
+            if cv2.contourArea(contour) > 2800 :
                 arc_len = cv2.arcLength(contour, True)
                 self.approx = cv2.approxPolyDP(contour, 0.1 * arc_len, True)
                 if (len(self.approx) == 4):
@@ -90,7 +90,7 @@ class cupDetection:
 def cameraInput():
     
     camera = picamera.PiCamera()
-    camera.resolution = (600, 420)
+    camera.resolution = (3000, 2000)
     camera.hflip = True
     camera.vflip = True
     camera.capture('original.jpg')
