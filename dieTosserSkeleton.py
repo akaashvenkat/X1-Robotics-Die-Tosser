@@ -1,4 +1,7 @@
 
+import RPI.GPIO as GPIO
+from time import sleep
+
 distance = 0.0
 yawAngle = 0.0
 
@@ -11,7 +14,10 @@ def main():
 #Initial setup for motor controls and camera
 def initSetup():
     print "Initial setup"
-
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(03, GPIO.OUT)
+    pwm=GPIO.PWM(03, 50)
+    pwm.start(0)
 #Retrieve information encrypted inside the
 #location.txt file and parse the variables
 def parseLocation():
@@ -37,6 +43,9 @@ def launchSequence(distance, yawAngle):
 
     shoot(power)
 
+    pwm.stop()
+    GPIO.cleanup()
+
 def adjustYawAngle(angle):
     print "Adjusting Yaw Angle"
 
@@ -45,6 +54,15 @@ def adjustPitchAngle(distance):
 
 def shoot(power):
     print "Shoot Sequence"
+    SetAngle(90)
+
+def SetAngle(angle):
+    duty = angle / 18 + 2
+    GPIO.output(03, True)
+    pwm.ChangeDutyCycle(duty)
+    sleep(1)
+    GPIO.output(03, False)
+    pwm.ChangeDutyCycle(0)
 
 if __name__ == '__main__':
   main()
