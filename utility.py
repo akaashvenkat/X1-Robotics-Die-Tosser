@@ -1,14 +1,20 @@
 import math
 #Implementation of findDistance and findFocalLength
 
-#Returns the distance to an object when given the image width, the focal length, and the actual width of the object
+#Calculates the distance(float) to an object
+# - topLeft(int array) and topRight(int array) indicate the position of the cup in an image
+# - focalLen(float) gives a relationship between actual width and pixel width of an object
+# - actWidth(float) is the actual width in inches of the object
 def findDistance(topLeft, topRight, focalLen, actWidth):
-  distance = actWidth * focalLen / abs(topRight[0] - topLeft[0])
+  distance = actWidth * focalLen / (topRight[0] - topLeft[0])
   return distance
 
-#Returns the focal length of the camera when given the actual distance to the object, the actual width of the object, and the image width that appears on screen
-def findFocalLength(knownDistance, knownWidth, imageWidth):
-  focalLength = knownDistance * imageWidth / knownWidth
+#Calculates the focal length(float) of the camera
+# - knownDistance(float) is the actual distance in inches from the camera to the object
+# - actWidth(float) is the actual width in inches of the object
+# - imageWidth(int) is the number of pixels the object appears to be wide in an image
+def findFocalLength(knownDistance, actWidth, imageWidth):
+  focalLength = knownDistance * imageWidth / actWidth
   return focalLength
 
 #Testing out the two functions:
@@ -21,7 +27,6 @@ def findFocalLength(knownDistance, knownWidth, imageWidth):
 
 #Under the given conditions, the distance should be around 600cm
 #print(distance)
-
 
 def findAngle(topLeft, topRight, imageWidth, focalLen, actWidth, distToObj):
     #topLeft is the top left pixel of the image
@@ -38,7 +43,6 @@ def findAngle(topLeft, topRight, imageWidth, focalLen, actWidth, distToObj):
     distToObjPixel = (actWidth*focalLen) / distToObj
     angle = math.asin(centerToObjPix/distToObjPixel)
     return angle
-
 
 def findDistanceAndAngle1(cupCoordinates):
     #cupCoordinates is a list of coordinates of the image
@@ -63,3 +67,4 @@ def findDistanceAndAngle1(cupCoordinates):
 
 # cupCoordinates = [[264, 56], [270, 236], [355, 236], [376, 62]]
 # print(findDistanceAndAngle1(cupCoordinates))
+
