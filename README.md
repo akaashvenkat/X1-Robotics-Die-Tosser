@@ -18,3 +18,7 @@ If running program on Raspberry Pi: **Set "CAMERA_ENABLED" to 1** at the top of 
 - - - - - - - - -
 ## setupInstructions
 Contains instructions to set up Ubuntu Virtual Machine and Raspberry Pi environments.
+
+- - - - - - - - -
+## workspace
+Contains project files used on Raspberry Pi.

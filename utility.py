@@ -1,4 +1,5 @@
-#Implementation of findDistance, findFocalLength, and findAngle
+import math
+#Implementation of findDistance and findFocalLength
 
 #Calculates the distance(float) to an object
 # - topLeft(int array) and topRight(int array) indicate the position of the cup in an image
@@ -16,32 +17,54 @@ def findFocalLength(knownDistance, actWidth, imageWidth):
   focalLength = knownDistance * imageWidth / actWidth
   return focalLength
 
+#Testing out the two functions:
+#An object that is 10cm is placed at 100cm, seems to be 30 pixels long
+#focal = findFocalLength(100, 10, 30)
+
+#An object topLeft pixel is at 360, the topRight is at 380, giving a pixel length of 20
+#Same camera used so the focal length is the same, and the actual object detecting is 40cm long
+#distance = findDistance(360, 380, focal, 40)
+
+#Under the given conditions, the distance should be around 600cm
+#print(distance)
+
 def findAngle(topLeft, topRight, imageWidth, focalLen, actWidth, distToObj):
+    #topLeft is the top left pixel of the image
+    #topRight is the top right pixel of the image
     #imageWidth is the pixels in the width of the image
+    #focalLen is the focal length of the camera
+    #actWidth is the actual width of the image
     #distToObj is distance returned by findDistance
+
     #pixel = 0 at the very left of the field of view
+    #angle returned is the angle between the center of the image and the object
 
     centerToObjPix = (topRight[0] - topLeft[0]) - imageWidth/2
     distToObjPixel = (actWidth*focalLen) / distToObj
     angle = math.asin(centerToObjPix/distToObjPixel)
     return angle
 
-#Calculates the yaw angle(float) that the cup is away from the center of the image
-#(Angle is zero at the center of the image)
-#(A negative angle indicates the cup is on the left of the center line)
-#(A positive angle indicates the cup is on the right of the center line)
-# - topLeft(int array) and topRight(int array) indicate the position of the cup in an image
-# - imageWidth(int) is the number of pixels of the image
-# - angleOfView(float) tells the angle of view the camera is capable of taking images
-def findAngle(topLeft, topRight, imageWidth, angleOfView):
-    #Determine the center location of the cup within the image
-    cupPixel = topRight - topLeft#topRight[0] - topLeft[0]
-    cupLocation = topLeft + cupPixel/2#topLeft[0] + (cupPixel/2)
+def findDistanceAndAngle1(cupCoordinates):
+    #cupCoordinates is a list of coordinates of the image
 
-    #Use ratios of the location vs the image width to determine the yaw angle of the cup
-    angle = ((cupLocation / imageWidth) - (0.5)) * angleOfView
+    imageWidth = 600;
+    ACTUAL_CUP_WIDTH = 5;
+    FOCAL_LENGTH = 350;
 
-    #Returns the calculated result
-    return angle
+    topRight = cupCoordinates[3][0]
+    topLeft = cupCoordinates[0][0]
 
-print(findFocalLength(100, 10, 50))
+    distance = ACTUAL_CUP_WIDTH * FOCAL_LENGTH / abs(topRight - topLeft)
+
+    centerToObjPix = imageWidth/2 - ((topRight - topLeft))
+    distToObjPixel = (ACTUAL_CUP_WIDTH*FOCAL_LENGTH) / distance
+
+
+    angle = math.asin(centerToObjPix/distToObjPixel)
+
+    distanceAngle = [distance, angle]
+    return distanceAngle
+
+# cupCoordinates = [[264, 56], [270, 236], [355, 236], [376, 62]]
+# print(findDistanceAndAngle1(cupCoordinates))
+
